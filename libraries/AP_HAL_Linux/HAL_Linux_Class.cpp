@@ -24,6 +24,7 @@
 #include "RCInput_Navio2.h"
 #include "RCInput_PRU.h"
 #include "RCInput_RPI.h"
+#include "RCInput_Raspilot.h"
 #include "RCInput_SBUS.h"
 #include "RCInput_SoloLink.h"
 #include "RCInput_UART.h"
@@ -36,6 +37,7 @@
 #include "RCOutput_Disco.h"
 #include "RCOutput_PCA9685.h"
 #include "RCOutput_PRU.h"
+#include "RCOutput_Raspilot.h"
 #include "RCOutput_Sysfs.h"
 #include "RCOutput_ZYNQ.h"
 #include "SPIDevice.h"
@@ -45,6 +47,7 @@
 #include "UARTDriver.h"
 #include "Util.h"
 #include "Util_RPI.h"
+#include "Util_PINE64.h"
 
 using namespace Linux;
 
@@ -56,6 +59,8 @@ using namespace Linux;
     CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_LINUX_DARK || \
     CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_LINUX_PXFMINI
 static UtilRPI utilInstance;
+#elif CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_LINUX_RASPILOT
+static UtilPINE64 utilInstance;
 #else
 static Util utilInstance;
 #endif
@@ -116,6 +121,8 @@ static GPIO_BBB gpioDriver;
       CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_LINUX_DARK || \
       CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_LINUX_PXFMINI
 static GPIO_RPI gpioDriver;
+#elif  CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_LINUX_RASPILOT
+static GPIO_PINE64 gpioDriver;
 #elif  CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_LINUX_NAVIO || \
        CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_LINUX_NAVIO2 || \
        CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_LINUX_EDGE
@@ -144,6 +151,8 @@ static RCInput_Multi rcinDriver{2, new RCInput_AioPRU, new RCInput_115200("/dev/
       CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_LINUX_DARK || \
       CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_LINUX_PXFMINI
 static RCInput_RPI rcinDriver;
+#elif CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_LINUX_RASPILOT
+static RCInput_Raspilot rcinDriver;
 #elif CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_LINUX_ZYNQ || \
       CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_LINUX_OCPOC_ZYNQ
 static RCInput_ZYNQ rcinDriver;
@@ -198,6 +207,8 @@ static ap::RCOutput_Tap rcoutDriver;
 static RCOutput_Sysfs rcoutDriver(0, 0, 15);
 #elif CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_LINUX_RST_ZYNQ
 static RCOutput_Sysfs rcoutDriver(0, 0, 8);
+#elif CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_LINUX_RASPILOT
+static RCOutput_Raspilot rcoutDriver;
 #else
 static Empty::RCOutput rcoutDriver;
 #endif
