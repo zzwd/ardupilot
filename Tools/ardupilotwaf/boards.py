@@ -601,6 +601,16 @@ class disco(linux):
             CONFIG_HAL_BOARD_SUBTYPE = 'HAL_BOARD_SUBTYPE_LINUX_DISCO',
         )
 
+class raspilot(linux):
+    toolchain = 'aarch64-linux-gnu'
+
+    def configure_env(self, cfg, env):
+        super(raspilot, self).configure_env(cfg, env)
+
+        env.DEFINES.update(
+            CONFIG_HAL_BOARD_SUBTYPE = 'HAL_BOARD_SUBTYPE_LINUX_RASPILOT',
+        )
+
 class erlebrain2(linux):
     toolchain = 'arm-linux-gnueabihf'
 
