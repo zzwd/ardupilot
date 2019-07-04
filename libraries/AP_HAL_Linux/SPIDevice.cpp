@@ -139,6 +139,18 @@ SPIDesc SPIDeviceManager::_device[] = {
     SPIDesc("rst_a",    0, 2,  SPI_MODE_3, 8, SPI_CS_KERNEL,  1*MHZ, 10*MHZ),
     SPIDesc("ms5611",   0, 3,  SPI_MODE_3, 8, SPI_CS_KERNEL,  1*MHZ, 10*MHZ),
 };
+#elif CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_LINUX_RASPILOT
+SPIDesc SPIDeviceManager::_device[] = {
+    SPIDesc("mpu9250",    0, 0, SPI_MODE_3, 8, PINE_A64_GPIO_PC11, 1*MHZ,  10*MHZ),
+    SPIDesc("ms5611",     0, 0, SPI_MODE_3, 8, PINE_A64_GPIO_PC5,  10*MHZ, 10*MHZ),
+    SPIDesc("lsm9ds0_am", 0, 0, SPI_MODE_3, 8, PINE_A64_GPIO_PC7,  10*MHZ, 10*MHZ),
+    SPIDesc("lsm9ds0_g",  0, 0, SPI_MODE_3, 8, PINE_A64_GPIO_PC4,  10*MHZ, 10*MHZ),
+    SPIDesc("adxl357",    0, 0, SPI_MODE_0, 8, PINE_A64_GPIO_PC12, 8*MHZ, 8*MHZ),
+    SPIDesc("adxrs453_x", 0, 0, SPI_MODE_0, 8, PINE_A64_GPIO_PC8,  1*MHZ,  4*MHZ),
+    SPIDesc("adxrs453_y", 0, 0, SPI_MODE_0, 8, PINE_A64_GPIO_PC9,  1*MHZ,  4*MHZ),
+    SPIDesc("adxrs453_z", 0, 0, SPI_MODE_0, 8, PINE_A64_GPIO_PC10, 1*MHZ,  4*MHZ),
+    SPIDesc("raspio",     1, 0, SPI_MODE_3, 8, PINE_A64_GPIO_PH6,  10*MHZ, 10*MHZ),
+};
 #else
 // empty device table
 SPIDesc SPIDeviceManager::_device[] = {
