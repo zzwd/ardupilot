@@ -23,6 +23,9 @@ extern const AP_HAL::HAL &hal;
 
 #if CONFIG_HAL_BOARD == HAL_BOARD_LINUX
 #include <AP_HAL_Linux/GPIO.h>
+#if CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_LINUX_RASPILOT
+#define LSM303D_DRDY_M_PIN PINE_A64_GPIO_PC15
+#endif
 #endif
 
 #ifndef LSM303D_DRDY_M_PIN
@@ -272,6 +275,11 @@ bool AP_Compass_LSM303D::init(enum Rotation rotation)
 
     _dev->set_device_type(DEVTYPE_LSM303D);
     set_dev_id(_compass_instance, _dev->get_bus_id());
+
+#if CONFIG_HAL_BOARD == HAL_BOARD_LINUX && CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_LINUX_RASPILOT
+    // FIXME: wrong way to force internal compass
+    set_external(_compass_instance, false);
+#endif
 
     // read at 91Hz. We don't run at 100Hz as fetching data too fast can cause some very
     // odd periodic changes in the output data

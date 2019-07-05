@@ -872,7 +872,20 @@ AP_InertialSensor::detect_backends(void)
     ADD_BACKEND(AP_InertialSensor_Invensense::probe(*this, hal.spi->get_device("mpu6000"), ROTATION_NONE));
     ADD_BACKEND(AP_InertialSensor_Invensense::probe(*this, hal.spi->get_device("mpu6500"), ROTATION_YAW_90));
 #elif HAL_INS_DEFAULT == HAL_INS_RASPILOT
+    /*_add_backend(AP_InertialSensor_ADI::probe(*this,hal.spi->get_device(HAL_INS_ADXL357_NAME), 
+                                                ROTATION_NONE,
+                                                hal.spi->get_device(HAL_INS_ADXRS453_X_NAME),
+                                                hal.spi->get_device(HAL_INS_ADXRS453_Y_NAME),
+                                                hal.spi->get_device(HAL_INS_ADXRS453_Z_NAME),
+                                                ROTATION_NONE));*/
+
+    //_add_backend(AP_InertialSensor_Invensense::probe(*this, hal.spi->get_device(HAL_INS_MPU60x0_NAME)));
+    //_add_backend(AP_InertialSensor_Invensense::probe(*this, hal.spi->get_device(HAL_INS_MPU9250_NAME)));
     
+    _add_backend(AP_InertialSensor_LSM9DS0::probe(*this,
+                                                  hal.spi->get_device(HAL_INS_LSM9DS0_G_NAME),
+                                                  hal.spi->get_device(HAL_INS_LSM9DS0_A_NAME),
+                                                  ROTATION_NONE, ROTATION_YAW_90,ROTATION_YAW_180));
 #elif HAL_INS_DEFAULT == HAL_INS_NONE
     // no INS device
 #else
